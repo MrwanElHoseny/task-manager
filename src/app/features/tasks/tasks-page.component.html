@@ -1,0 +1,111 @@
+<h1 class="page-title">Tasks</h1>
+
+<app-filter-bar
+  class="filters"
+  [users]="users()"
+  [(status)]="filters.status"
+  [(priority)]="filters.priority"
+  [(assigneeId)]="filters.assigneeId"
+  (newTask)="actions.create()"
+/>
+
+@if (loadError(); as message) {
+  <app-state-message title="We couldn't load your tasks" [detail]="message">
+    <button matButton="filled" type="button" (click)="store.reload()">Try again</button>
+  </app-state-message>
+} @else if (store.isLoading()) {
+  <div class="table-card skeleton" role="status" aria-label="Loading tasks">
+    @for (row of skeletonRows; track row) {
+      <app-skeleton height="20px" />
+    }
+  </div>
+} @else if (totalTasks() === 0) {
+  <app-state-message
+    title="No tasks match"
+    detail="Try a different search, or clear the filters to see everything."
+  >
+    <button matButton="outlined" type="button" (click)="filters.clear()">Clear filters</button>
+  </app-state-message>
+} @else {
+  <div class="table-card">
+    <div class="table-scroll">
+      <table
+        mat-table
+        matSort
+        matSortActive="dueDate"
+        matSortDirection="asc"
+        [dataSource]="rows()"
+        [trackBy]="trackById"
+        (matSortChange)="onSort($event)"
+      >
+        <ng-container matColumnDef="title">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Title</th>
+          <td *matCellDef="let task" mat-cell class="title-cell">{{ task.title }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Status</th>
+          <td *matCellDef="let task" mat-cell>{{ statusLabel(task) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="priority">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Priority</th>
+          <td *matCellDef="let task" mat-cell>
+            <app-priority-badge [priority]="task.priority" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dueDate">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Due</th>
+          <td *matCellDef="let task" mat-cell [class.overdue]="isOverdue(task)">
+            {{ dueLabel(task) }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="assignee">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Assignee</th>
+          <td *matCellDef="let task" mat-cell>
+            <span class="assignee">
+              <app-avatar [initials]="task.assignee.avatar" />
+              {{ task.assignee.name }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th *matHeaderCellDef mat-header-cell><span class="visually-hidden">Actions</span></th>
+          <td *matCellDef="let task" mat-cell class="actions-cell">
+            <button
+              matButton
+              type="button"
+              [attr.aria-label]="'Edit ' + task.title"
+              (click)="actions.edit(task)"
+            >
+              Edit
+            </button>
+            <button
+              matButton
+              type="button"
+              [attr.aria-label]="'Delete ' + task.title"
+              (click)="actions.delete(task)"
+            >
+              Delete
+            </button>
+          </td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="columns()" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: columns()" mat-row></tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      aria-label="Tasks table pages"
+      [length]="totalTasks()"
+      [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPage($event)"
+    />
+  </div>
+}

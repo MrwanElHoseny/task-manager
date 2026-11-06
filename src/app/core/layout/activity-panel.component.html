@@ -1,0 +1,25 @@
+<section class="panel fade-in" role="dialog" aria-labelledby="activity-heading">
+  <h2 id="activity-heading" class="heading">Recent activity</h2>
+
+  @if (error(); as message) {
+    <p class="note" role="alert">{{ message }}</p>
+    <button matButton type="button" (click)="retry.emit()">Try again</button>
+  } @else if (loading() && activities().length === 0) {
+    <p class="note">Loading activity…</p>
+  } @else {
+    <ul class="feed">
+      @for (activity of activities(); track activity.id) {
+        <li class="entry">
+          <span
+            ><strong>{{ activity.actor }}</strong> {{ describe(activity) }}</span
+          >
+          <time class="when" [attr.datetime]="activity.createdAt">{{
+            timeAgo(activity.createdAt)
+          }}</time>
+        </li>
+      } @empty {
+        <li class="note">Nothing has happened yet.</li>
+      }
+    </ul>
+  }
+</section>

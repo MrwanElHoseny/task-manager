@@ -1,0 +1,45 @@
+.filters {
+  margin-bottom: 16px;
+}
+
+.table-card {
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.title-cell {
+  font-weight: 500;
+}
+
+.overdue {
+  color: var(--color-danger);
+}
+
+.assignee {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+}

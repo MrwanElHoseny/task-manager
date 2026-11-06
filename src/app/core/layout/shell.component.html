@@ -1,0 +1,20 @@
+<button type="button" class="skip-link" (click)="skipToContent(main)">Skip to content</button>
+
+<app-header [showMenuButton]="useDrawer()" (menuToggle)="toggleDrawer()" />
+
+<mat-sidenav-container class="shell-body">
+  <mat-sidenav
+    class="shell-sidenav"
+    [mode]="useDrawer() ? 'over' : 'side'"
+    [opened]="!useDrawer()"
+    [disableClose]="!useDrawer()"
+  >
+    <app-sidebar (linkActivated)="closeDrawerIfOverlay()" (newTask)="newTask()" />
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <main #main class="shell-main" tabindex="-1">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

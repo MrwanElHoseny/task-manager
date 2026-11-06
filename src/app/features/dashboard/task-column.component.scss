@@ -1,0 +1,55 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.column {
+  height: 100%;
+  padding: 14px;
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.heading {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.count {
+  min-width: 26px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--color-border);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  // Leaves an empty column something to drop onto.
+  min-height: 96px;
+}
+
+.empty {
+  margin: 0;
+  padding: 32px 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  text-align: center;
+}

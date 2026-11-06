@@ -1,0 +1,79 @@
+.header {
+  display: grid;
+  grid-template-columns: 1fr minmax(160px, 360px) 1fr;
+  align-items: center;
+  gap: 16px;
+  height: var(--header-height);
+  padding: 0 24px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+
+  @media (max-width: 599.98px) {
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    padding: 0 8px;
+  }
+}
+
+.brand-area {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-primary);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--color-primary);
+  font-size: 13px;
+}
+
+.brand-name {
+  white-space: nowrap;
+
+  @media (max-width: 599.98px) {
+    display: none;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+// Icon buttons expect a 24px icon; bare text overflows that box and sits off-center.
+.icon-glyph {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--color-primary);
+  font-size: 12px;
+  font-weight: 600;
+}

@@ -1,0 +1,41 @@
+.panel {
+  width: min(360px, calc(100vw - 16px));
+  max-height: 70dvh;
+  padding: 16px;
+  overflow-y: auto;
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+}
+
+.heading {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.feed {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 0;
+  border-top: 1px solid var(--color-border);
+  font-size: 13px;
+}
+
+.when,
+.note {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.note {
+  margin: 0;
+  list-style: none;
+}

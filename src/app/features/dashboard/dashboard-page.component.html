@@ -1,0 +1,39 @@
+<h1 class="visually-hidden">Dashboard</h1>
+
+@if (!loadError()) {
+  <section class="stats" aria-label="Task statistics">
+    @for (stat of stats(); track stat.id) {
+      <app-stat-card [stat]="stat" [loading]="store.isLoading()" />
+    }
+  </section>
+}
+
+<app-filter-bar
+  class="filters"
+  [users]="users()"
+  [(status)]="filters.status"
+  [(priority)]="filters.priority"
+  [(assigneeId)]="filters.assigneeId"
+  (newTask)="actions.create()"
+/>
+
+@if (loadError(); as message) {
+  <app-state-message title="We couldn't load your tasks" [detail]="message">
+    <button matButton="filled" type="button" (click)="store.reload()">Try again</button>
+  </app-state-message>
+} @else if (store.isLoading()) {
+  <app-board-skeleton />
+} @else if (noMatches()) {
+  <app-state-message title="No tasks match" detail="Try a different search or fewer filters.">
+    <button matButton="outlined" type="button" (click)="filters.clear()">Clear filters</button>
+  </app-state-message>
+} @else {
+  <app-task-board
+    [columns]="store.columns()"
+    [statuses]="filters.visibleStatuses()"
+    (edit)="actions.edit($event)"
+    (remove)="actions.delete($event)"
+    (moved)="actions.move($event)"
+    (statusChange)="actions.moveToEnd($event.task, $event.status)"
+  />
+}

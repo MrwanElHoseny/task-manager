@@ -1,0 +1,91 @@
+:host {
+  display: block;
+}
+
+.card {
+  --accent: var(--color-primary);
+
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  cursor: grab;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+
+  &:hover,
+  &:focus-within {
+    border-color: var(--accent);
+    box-shadow:
+      0 0 0 1px var(--accent),
+      0 4px 12px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+}
+
+.card--in-progress {
+  --accent: #f57c00;
+}
+
+.card--done {
+  --accent: var(--color-success);
+}
+
+.card--overdue {
+  --accent: var(--color-danger);
+
+  border-left: 4px solid var(--color-danger);
+  background: var(--color-danger-surface);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.menu-button {
+  --mat-icon-button-state-layer-size: 28px;
+
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.title {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  margin: 0 0 12px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.due,
+.tags {
+  margin: 0 0 6px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.due--overdue {
+  color: var(--color-danger);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+  font-size: 12px;
+}

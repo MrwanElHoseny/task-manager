@@ -1,0 +1,116 @@
+<h2 mat-dialog-title>{{ task ? 'Edit task' : 'New task' }}</h2>
+
+<form [formGroup]="form" novalidate (ngSubmit)="submit()">
+  <mat-dialog-content class="fields">
+    @if (serverError(); as message) {
+      <p class="server-error" role="alert">{{ message }}</p>
+    }
+
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" required />
+      @if (form.controls.title.hasError('maxlength')) {
+        <mat-error>Keep the title under {{ titleMaxLength }} characters.</mat-error>
+      } @else {
+        <mat-error>Give the task a title.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+      <mat-error>Keep the description under {{ descriptionMaxLength }} characters.</mat-error>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          @for (status of statuses; track status) {
+            <mat-option [value]="status">{{ statusLabels[status] }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Priority</mat-label>
+        <mat-select formControlName="priority">
+          @for (priority of priorities; track priority) {
+            <mat-option [value]="priority">{{ priorityLabels[priority] }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Due date</mat-label>
+        <input matInput formControlName="dueDate" required [matDatepicker]="duePicker" />
+        <mat-datepicker-toggle matIconSuffix [for]="duePicker" />
+        <mat-datepicker #duePicker />
+        @if (form.controls.dueDate.hasError('pastDate')) {
+          <mat-error>The due date can't be in the past.</mat-error>
+        } @else if (form.controls.dueDate.hasError('matDatepickerParse')) {
+          <mat-error>Enter a valid date.</mat-error>
+        } @else {
+          <mat-error>Choose a due date.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Assignee</mat-label>
+        <mat-select formControlName="assigneeId" required>
+          @for (user of assignees(); track user.id) {
+            <mat-option [value]="user.id">{{ user.name }}</mat-option>
+          }
+        </mat-select>
+        @if (usersFailed()) {
+          <mat-hint>Couldn't load the team list.</mat-hint>
+        }
+        <mat-error>Choose who this is assigned to.</mat-error>
+      </mat-form-field>
+    </div>
+
+    @if (isDone() && form.controls.completedAt; as completedAt) {
+      <mat-form-field appearance="outline">
+        <mat-label>Completed on</mat-label>
+        <input matInput formControlName="completedAt" required [matDatepicker]="completedPicker" />
+        <mat-datepicker-toggle matIconSuffix [for]="completedPicker" />
+        <mat-datepicker #completedPicker />
+        @if (completedAt.hasError('futureDate')) {
+          <mat-error>The completion date can't be in the future.</mat-error>
+        } @else {
+          <mat-error>Enter the date this was completed.</mat-error>
+        }
+      </mat-form-field>
+    }
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tags</mat-label>
+      <mat-chip-grid #tagGrid aria-label="Task tags">
+        @for (tag of form.controls.tags.controls; track tag; let index = $index) {
+          <mat-chip-row (removed)="removeTag(index)">
+            {{ tag.value }}
+            <button type="button" matChipRemove [attr.aria-label]="'Remove tag ' + tag.value">
+              ×
+            </button>
+          </mat-chip-row>
+        }
+        <input
+          placeholder="Add a tag and press Enter"
+          [matChipInputFor]="tagGrid"
+          [matChipInputSeparatorKeyCodes]="separatorKeys"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="addTag($event)"
+        />
+      </mat-chip-grid>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button matButton type="button" [disabled]="saving()" (click)="requestClose()">Cancel</button>
+    <button matButton="filled" type="submit" [disabled]="saving()">
+      {{ saving() ? 'Saving…' : task ? 'Save changes' : 'Create task' }}
+    </button>
+  </mat-dialog-actions>
+</form>

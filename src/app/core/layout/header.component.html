@@ -1,0 +1,55 @@
+<header class="header">
+  <div class="brand-area">
+    @if (showMenuButton()) {
+      <button
+        matIconButton
+        type="button"
+        aria-label="Toggle navigation"
+        (click)="menuToggle.emit()"
+      >
+        <span class="icon-glyph" aria-hidden="true">☰</span>
+      </button>
+    }
+    <a class="brand" routerLink="/dashboard" aria-label="Task Manager home">
+      <span class="brand-mark" aria-hidden="true">📋</span>
+      <span class="brand-name">Task Manager</span>
+    </a>
+  </div>
+
+  <app-search-box class="search" [term]="filters.search()" (termChange)="onSearch($event)" />
+
+  <div class="actions">
+    <button
+      matIconButton
+      type="button"
+      cdkOverlayOrigin
+      #bell="cdkOverlayOrigin"
+      aria-label="Recent activity"
+      aria-haspopup="dialog"
+      [attr.aria-expanded]="panelOpen()"
+      (click)="panelOpen.set(!panelOpen())"
+    >
+      <span class="icon-glyph" aria-hidden="true">🔔</span>
+    </button>
+
+    <ng-template
+      cdkConnectedOverlay
+      cdkConnectedOverlayHasBackdrop
+      cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+      [cdkConnectedOverlayOrigin]="bell"
+      [cdkConnectedOverlayOpen]="panelOpen()"
+      [cdkConnectedOverlayPositions]="panelPositions"
+      (backdropClick)="panelOpen.set(false)"
+      (detach)="panelOpen.set(false)"
+    >
+      <app-activity-panel
+        [activities]="activity.recent()"
+        [loading]="activity.isLoading()"
+        [error]="activityError()"
+        (retry)="activity.reload()"
+      />
+    </ng-template>
+
+    <span class="avatar" role="img" aria-label="Signed in as John Doe">JD</span>
+  </div>
+</header>

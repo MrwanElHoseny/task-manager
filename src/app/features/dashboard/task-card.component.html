@@ -1,0 +1,47 @@
+<article
+  class="card"
+  animate.enter="fade-in"
+  [class.card--overdue]="overdue()"
+  [class.card--todo]="task().status === 'todo'"
+  [class.card--in-progress]="task().status === 'in_progress'"
+  [class.card--done]="task().status === 'done'"
+>
+  <div class="top">
+    <app-priority-badge [priority]="task().priority" />
+    <button
+      matIconButton
+      class="menu-button"
+      type="button"
+      [matMenuTriggerFor]="menu"
+      [attr.aria-label]="'Actions for ' + task().title"
+    >
+      <span aria-hidden="true">⋮</span>
+    </button>
+  </div>
+
+  <h3 class="title">{{ task().title }}</h3>
+  <p class="description">{{ task().description }}</p>
+
+  <p class="due" [class.due--overdue]="overdue()">
+    <span aria-hidden="true">{{ dueIcon() }}</span> {{ due() }}
+  </p>
+
+  @if (task().tags.length) {
+    <p class="tags">{{ task().tags.join(', ') }}</p>
+  }
+
+  <footer class="footer">
+    <app-avatar [initials]="task().assignee.avatar" />
+    <span>{{ assigneeHandle() }}</span>
+  </footer>
+</article>
+
+<mat-menu #menu="matMenu" xPosition="before">
+  <button mat-menu-item type="button" (click)="edit.emit()">Edit</button>
+  @for (status of moveTargets(); track status) {
+    <button mat-menu-item type="button" (click)="moveTo.emit(status)">
+      Move to {{ statusLabels[status] }}
+    </button>
+  }
+  <button mat-menu-item type="button" (click)="remove.emit()">Delete</button>
+</mat-menu>

@@ -1,0 +1,26 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
+
+  @media (max-width: 1199.98px) {
+    grid-template-columns: repeat(3, minmax(280px, 1fr));
+    padding-bottom: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+
+    app-task-column {
+      scroll-snap-align: start;
+    }
+  }
+
+  @media (max-width: 599.98px) {
+    grid-template-columns: minmax(0, 1fr);
+    overflow-x: visible;
+  }
+}
+
+.board--single {
+  grid-template-columns: minmax(0, 480px);
+}

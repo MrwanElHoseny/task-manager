@@ -1,0 +1,43 @@
+<h1 class="page-title">Team</h1>
+
+@if (loadError(); as message) {
+  <app-state-message title="We couldn't load the team" [detail]="message">
+    <button matButton="filled" type="button" (click)="users.reload()">Try again</button>
+  </app-state-message>
+} @else if (users.isLoading()) {
+  <div class="grid" role="status" aria-label="Loading team">
+    @for (card of skeletonCards; track card) {
+      <div class="member"><app-skeleton height="88px" /></div>
+    }
+  </div>
+} @else {
+  <ul class="grid">
+    @for (member of members(); track member.id) {
+      <li class="member">
+        <div class="identity">
+          <app-avatar class="avatar" [initials]="member.avatar" />
+          <div class="names">
+            <h2 class="name">{{ member.name }}</h2>
+            <a class="email" [href]="'mailto:' + member.email">{{ member.email }}</a>
+          </div>
+        </div>
+        <dl class="workload">
+          <div>
+            <dt>Open</dt>
+            <dd>{{ member.open }}</dd>
+          </div>
+          <div>
+            <dt>Overdue</dt>
+            <dd [class.overdue]="member.overdue > 0">{{ member.overdue }}</dd>
+          </div>
+          <div>
+            <dt>Done</dt>
+            <dd>{{ member.done }}</dd>
+          </div>
+        </dl>
+      </li>
+    } @empty {
+      <li class="member">Nobody on the team yet.</li>
+    }
+  </ul>
+}

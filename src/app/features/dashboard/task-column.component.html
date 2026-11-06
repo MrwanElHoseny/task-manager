@@ -1,0 +1,29 @@
+<section class="column" [attr.aria-labelledby]="headingId()">
+  <header class="header">
+    <h2 class="heading" [id]="headingId()">{{ heading() }}</h2>
+    <span class="count" [attr.aria-label]="tasks().length + ' tasks'">{{ tasks().length }}</span>
+  </header>
+
+  <div
+    class="cards"
+    role="list"
+    cdkDropList
+    [cdkDropListData]="status()"
+    (cdkDropListDropped)="onDrop($event)"
+  >
+    @for (task of tasks(); track task.id) {
+      <app-task-card
+        role="listitem"
+        cdkDrag
+        [cdkDragData]="task"
+        [cdkDragStartDelay]="dragDelay"
+        [task]="task"
+        (edit)="edit.emit(task)"
+        (remove)="remove.emit(task)"
+        (moveTo)="statusChange.emit({ task, status: $event })"
+      />
+    } @empty {
+      <p class="empty">No tasks here.</p>
+    }
+  </div>
+</section>

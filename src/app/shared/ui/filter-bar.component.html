@@ -1,0 +1,37 @@
+<div class="status-filter" role="group" aria-label="Filter by status">
+  @for (option of statusOptions; track option.value) {
+    <button
+      type="button"
+      class="status-option"
+      [class.status-option--active]="status() === option.value"
+      [attr.aria-pressed]="status() === option.value"
+      (click)="status.set(option.value)"
+    >
+      {{ option.label }}
+    </button>
+  }
+</div>
+
+<div class="controls">
+  <mat-form-field class="compact-field select" appearance="outline" subscriptSizing="dynamic">
+    <mat-select aria-label="Filter by priority" [(value)]="priority">
+      <mat-select-trigger>{{ priorityLabel(priority()) }}</mat-select-trigger>
+      <mat-option [value]="all">All priorities</mat-option>
+      @for (option of priorities; track option) {
+        <mat-option [value]="option">{{ priorityLabels[option] }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="compact-field select" appearance="outline" subscriptSizing="dynamic">
+    <mat-select aria-label="Filter by assignee" [(value)]="assigneeId">
+      <mat-select-trigger>{{ assigneeName(assigneeId()) }}</mat-select-trigger>
+      <mat-option [value]="all">All assignees</mat-option>
+      @for (user of users(); track user.id) {
+        <mat-option [value]="user.id">{{ user.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button matButton="filled" type="button" (click)="newTask.emit()">+ New Task</button>
+</div>

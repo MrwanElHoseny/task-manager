@@ -1,0 +1,65 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.member {
+  padding: 20px;
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  --avatar-size: 40px;
+}
+
+.names {
+  min-width: 0;
+}
+
+.name {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.email {
+  color: var(--color-primary-dark);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.workload {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+
+  dt {
+    color: var(--color-text-muted);
+    font-size: 12px;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+}
+
+.overdue {
+  color: var(--color-danger);
+}

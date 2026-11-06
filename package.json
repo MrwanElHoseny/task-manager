@@ -1,0 +1,51 @@
+{
+  "name": "task-manager",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "concurrently --names api,web --prefix-colors blue,green \"npm:api\" \"npm:web\"",
+    "build": "ng build",
+    "test": "ng test --watch=false",
+    "lint": "ng lint",
+    "prestart": "node scripts/build-db.mjs --if-missing",
+    "web": "ng serve",
+    "api": "json-server mock-api/db.json --port 3000",
+    "test:watch": "ng test",
+    "test:coverage": "ng test --watch=false --coverage",
+    "data:reset": "node data-fetching/generate-data.js && node scripts/build-db.mjs",
+    "format": "prettier --write \"src/**/*.{ts,html,scss}\" \"scripts/**/*.mjs\"",
+    "prepare": "husky"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/cdk": "^21.2.14",
+    "@angular/common": "^21.2.0",
+    "@angular/compiler": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.0",
+    "@angular/material": "^21.2.14",
+    "@angular/platform-browser": "^21.2.0",
+    "@angular/router": "^21.2.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.2.29",
+    "@angular/cli": "^21.2.29",
+    "@angular/compiler-cli": "^21.2.0",
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^4.1.12",
+    "angular-eslint": "21.4.0",
+    "concurrently": "^10.0.6",
+    "eslint": "^10.3.0",
+    "husky": "^9.1.7",
+    "jsdom": "^28.0.0",
+    "json-server": "1.0.0-beta.15",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "8.59.2",
+    "vitest": "^4.0.8"
+  }
+}
